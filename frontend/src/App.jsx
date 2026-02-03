@@ -8,7 +8,7 @@ const App = () => {
   return (
     <>
     <Routes>
-      <Route path='/room/create' element={<CreateRoom/>}/>
+      <Route path='/' element={<CreateRoom/>}/>
     <Route path="/room/join/:roomId" element={<JoinRoom />} />
     </Routes>
     </>
