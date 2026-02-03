@@ -21,10 +21,23 @@ const FRONTEND_URL =
 ================================ */
 app.use(
   cors({
-    origin: [FRONTEND_URL],
+    origin: (origin, callback) => {
+      if (
+        !origin ||
+        origin.includes("vercel.app") ||
+        origin === "http://localhost:5173"
+      ) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
+
+app.options("*", cors());
+
 
 app.use(express.json());
 
