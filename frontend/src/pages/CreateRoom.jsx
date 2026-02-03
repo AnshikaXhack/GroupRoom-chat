@@ -1,25 +1,41 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const CreateRoom = () => {
   const [link, setLink] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const createroom = () => {
-    setLoading(true)
-    navigator.geolocation.getCurrentPosition(
-      async ({ coords }) => {
-        const res = await axios.post('http://localhost:3000/room/create', {
-          lat: coords.latitude,
-          long: coords.longitude
-        })
-        setLink(res.data.link)
-        setLoading(false)
-      },
-      () => setLoading(false)
-    )
-  }
+const createroom = () => {
+  setLoading(true);
+
+  navigator.geolocation.getCurrentPosition(
+    async ({ coords }) => {
+      try {
+        const res = await axios.post(
+          `${BACKEND_URL}/room/create`,
+          {
+            lat: coords.latitude,
+            long: coords.longitude,
+          }
+        );
+
+        setLink(res.data.link);
+      } catch (err) {
+        console.error(err);
+        alert("Failed to create room");
+      } finally {
+        setLoading(false);
+      }
+    },
+    () => {
+      alert("Location permission denied");
+      setLoading(false);
+    }
+  );
+};
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-200 via-blue-200 to-purple-200 flex items-center justify-center px-4">

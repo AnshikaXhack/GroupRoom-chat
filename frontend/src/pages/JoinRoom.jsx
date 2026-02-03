@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import { io } from 'socket.io-client'
 import { useParams } from 'react-router-dom'
-
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 const JoinRoom = () => {
   const { roomId } = useParams()
   const [message, setMessage] = useState('')
@@ -16,13 +16,16 @@ const JoinRoom = () => {
     navigator.geolocation.getCurrentPosition(
       async ({ coords }) => {
         try {
-          const res = await axios.post(`http://localhost:3000/room/join/${roomId}`, {
-            lat: coords.latitude,
-            long: coords.longitude
-          })
+          const res = await axios.post(
+            `${BACKEND_URL}/room/join/${roomId}`,
+            {
+              lat: coords.latitude,
+              long: coords.longitude
+            }
+          )
 
           if (res.data.message === 'allowed') {
-            s = io('http://localhost:3000')
+            s = io(BACKEND_URL)
             s.emit('join-room', roomId)
             s.on('receive-message', (msg) =>
               setChat((prev) => [...prev, { text: msg, self: false }])
@@ -61,7 +64,6 @@ const JoinRoom = () => {
     setChat((prev) => [...prev, { text: message, self: true }])
     setMessage('')
   }
-
   return (
   <div className="min-h-screen bg-gradient-to-br from-indigo-200 via-blue-200 to-purple-200 flex items-center justify-center p-4">
     <div className="w-full max-w-3xl bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col">
