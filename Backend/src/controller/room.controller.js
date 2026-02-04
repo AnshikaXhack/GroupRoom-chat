@@ -20,10 +20,13 @@ const createroom = async (req, res) => {
       radius: 5,
     });
 
-    return res.status(200).json({
-      link: `http://localhost:5173/room/join/${roomId}`,
-      room: newRoom,
-    });
+   const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
+
+return res.status(201).json({
+  link: `${FRONTEND_URL}/room/join/${roomId}`,
+  room: newRoom,
+});
+
   } catch (error) {
     console.error(error);
     return res.status(500).json({

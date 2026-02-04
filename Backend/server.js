@@ -1,62 +1,67 @@
+// server.js
 const express = require("express");
 require("dotenv").config();
 const cors = require("cors");
 const { createServer } = require("http");
 const { Server } = require("socket.io");
 
-const roomroute = require("./src/routes/room.route.js");
+const roomRoute = require("./src/routes/room.route.js");
 const chatSocket = require("./src/socket/socket.js");
 const connectToDb = require("./src/db/db.js");
 
 const app = express();
 
 /* ===============================
-   1️⃣ FRONTEND URL (IMPORTANT)
+   1️⃣ FRONTEND URL
 ================================ */
-const FRONTEND_URL =
-  process.env.FRONTEND_URL || "http://localhost:5173";
+
 
 /* ===============================
-   2️⃣ CORS FIX
+   2️⃣ CORS MIDDLEWARE (CRASH-FREE)
 ================================ */
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
+
+
 app.use(
   cors({
-    origin: (origin, callback) => {
-      if (
-        !origin ||
-        origin.includes("vercel.app") ||
-        origin === "http://localhost:5173"
-      ) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
+    origin: [
+      "http://localhost:5173",
+      "https://group-room-chat-ncjfvswfz-anshikaxhacks-projects.vercel.app"
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
 
-app.options("*", cors());
+// IMPORTANT: handle preflight properly
 
 
+
+
+/* ===============================
+   3️⃣ BODY PARSER
+================================ */
 app.use(express.json());
 
 /* ===============================
-   3️⃣ DB
+   4️⃣ DATABASE CONNECTION
 ================================ */
 connectToDb();
 
 /* ===============================
-   4️⃣ ROUTES
+   5️⃣ ROUTES
 ================================ */
-app.get("/", (req, res) => {
+app.get("/create", (req, res) => {
   res.send("Backend is running 🚀");
 });
 
-app.use("/room", roomroute);
+app.use("/room", roomRoute);
+
+
 
 /* ===============================
-   5️⃣ SOCKET SERVER
+   6️⃣ SOCKET SERVER
 ================================ */
 const expServer = createServer(app);
 
@@ -70,10 +75,10 @@ const io = new Server(expServer, {
 chatSocket(io);
 
 /* ===============================
-   6️⃣ PORT FIX (RENDER)
+   7️⃣ START SERVER
 ================================ */
 const PORT = process.env.PORT || 3000;
 
 expServer.listen(PORT, () => {
-  console.log("Server running on port", PORT);
+  console.log(`Server running on port ${PORT}`);
 });

@@ -66,12 +66,10 @@ const createroom = () => {
               Share this link to join
             </p>
 
-            <Link
-              to={link.replace('http://localhost:5173', '')}
-              className="block text-sm font-medium text-indigo-700 break-all hover:underline"
-            >
-              {link}
-            </Link>
+            <a href={link} target="_blank" rel="noopener noreferrer">
+  {link}
+</a>
+
           </div>
         )}
       </div>
