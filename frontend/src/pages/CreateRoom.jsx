@@ -22,12 +22,13 @@ const createroom = () => {
         );
 
         setLink(res.data.link);
-      } catch (err) {
-        console.error(err);
-        alert("Failed to create room");
-      } finally {
-        setLoading(false);
-      }
+      }  
+      catch (err) {
+      console.error("AXIOS ERROR 👉", err);
+          console.error("RESPONSE 👉", err?.response);
+        alert(err?.response?.data?.message || "Failed to create room");
+          }
+
     },
     () => {
       alert("Location permission denied");
