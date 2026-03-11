@@ -20,7 +20,7 @@ const JoinRoom = () => {
             `${BACKEND_URL}/room/join/${roomId}`,
             {
               lat: coords.latitude,
-              long: coords.longitude
+              lng: coords.longitude
             }
           )
 
