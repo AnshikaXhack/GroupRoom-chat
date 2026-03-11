@@ -111,7 +111,10 @@ const CreateRoom = () => {
 
           // // Navigate to room automatically if desired
           // navigate(`/room/join/${res.data.room.roomId}`);
-          setLink(res.data.link);
+          const roomId = res.data.room.roomId;
+
+const shareLink = `${window.location.origin}/room/join/${roomId}`;
+setLink(shareLink);
 setTimeout(() => {
   navigate(`/room/join/${res.data.room.roomId}`);
 }, 2000); // wait 2 seconds to show link
