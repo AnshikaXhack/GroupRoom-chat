@@ -1,5 +1,6 @@
+
 import calculateDistance from "../utils/calculateDistance.js";
-const roomModel = require("../models/room.model.js");
+import roomModel from "../models/room.model.js";
 
 const createroom = async (req, res) => {
   try {
