@@ -75,4 +75,7 @@ const joinroom = async (req, res) => {
   }
 };
 
-module.exports = { createroom, joinroom };
+export default {
+  createroom,
+  joinroom
+}
