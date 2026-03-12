@@ -5,11 +5,11 @@ const createroom = async (req, res) => {
   try {
     const { lat, long } = req.body;
 
-    if (!lat || !long) {
-      return res.status(400).json({
-        message: "all fields are required",
-      });
-    }
+ if (lat === undefined || long === undefined) {
+  return res.status(400).json({
+    message: "all fields are required",
+  });
+}
 
     const roomId = Math.random().toString(36).slice(2, 8);
 
@@ -28,10 +28,11 @@ return res.status(201).json({
 });
 
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({
-      message: "internal server error",
-    });
+   console.error("CREATE ROOM ERROR:", error);
+
+return res.status(500).json({
+  message: error.message,
+});
   }
 };
 

@@ -1,4 +1,4 @@
-function chatSocket(io) {
+export default function chatSocket(io) {
   io.on("connection", (socket) => {
     console.log("🟢 Socket connected:", socket.id);
 
@@ -16,6 +16,3 @@ function chatSocket(io) {
     });
   });
 }
-
-module.exports = chatSocket;
-
